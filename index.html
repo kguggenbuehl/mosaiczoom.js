@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mosaicoom - Example</title>
+	<!-- needs mosaiczoom.css -->
+	<link rel="stylesheet" type="text/css" href="css/mosaiczoom.css">
+</head>
+<body>
+	<main>
+		<h1>mosaiczoom.js</h1>
+		<!-- needs link (mz-link), needs image (data-mz-link) and optional caption (data-mz-caption) -->
+		<div >
+			<img class="mz-link" data-mz-link="img/background.jpg" data-mz-caption="That's a wonderful palm beach at sunset." src="img/background.jpg">
+			<img class="mz-link" data-mz-link="img/beach.jpg" data-mz-caption="A landing stage towards the open sea." src="img/beach.jpg">
+		</div>
+
+		<!-- needs wrapper (mz-wrapper) -->
+		<div class="mz-wrapper"></div>
+
+	</main>
+
+<!-- needs jQuery, mosaiczoom.js-->
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/mosaiczoom.js"></script>
+
+<!-- load mosaiczoom -->
+<script type="text/javascript">
+	
+	$(document).ready(function($){
+
+		mosaiczoom({
+			gridRows: 4, //possible: 2 to infinite
+			gridColumns: 4, //possible: 2 to infinite
+			mosaic: 'top', //possible: top, left, bottom, right
+			caption: true //possible: true / false
+		});
+
+	});
+
+</script>
+
+</body>
+</html>
