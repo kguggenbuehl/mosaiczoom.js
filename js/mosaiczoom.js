@@ -22,6 +22,8 @@ function mosaiczoom(userValues){
 		//define class (type of mosaic)
 		mosaicClass: 'mz-grid__mosaic-' + userValues.mosaic,
 
+		cubeVisible: 'data-mz-visible',
+
 		timeFadein: 200,
 		timeFadeout: 1000,
 		portraitSize: 0.4
@@ -36,7 +38,7 @@ function mosaiczoom(userValues){
 		//load image of event (returnDimension)
 		//give type of mosaic
 		//when loaded, trigger callback 'setMoasic'
-		returnDimension($(this).attr('data-mz-link'), options.mosaic, function(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic){
+		returnDimension($(this), options.mosaic, function(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic){
 
 			setMosaic(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic);
 
@@ -85,7 +87,7 @@ function defineGrid(captionText){
 //define size of mosaic
 //add and place images to grid-items
 //call timeout with specific type of mosaic
-function setMosaic(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic){
+function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic){
 
 	var grid = $(options.gridWrapper).find('ul');
 	var allItems = $(options.gridWrapper).find('li');
@@ -134,40 +136,44 @@ function setMosaic(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMo
 		//set image, position and size to each li
 		if ($(allItems[i]).hasClass('mz-grid__image')) {
 			$(allItems[i]).css({
-				'background-image': 'url('+imageUrl+')',
+				'background-image': 'url('+clickedObject.attr('data-mz-link')+')',
 				'background-size': '100'*options.gridColumns+'%',
 				'background-position': horizontalPosition + ' ' + verticalPosition,
 			});	
 		}
 
-		//change order when type of mosaic is right or bottom
+		//change order when type of mosaic is right, bottom, left, right or cube
 		var order = 0;
 		switch (typeOfMosaic){
 			case 'left':
 				order = i;
+				styleMosaic(allItems, order, i);
 				break;
 			case 'top':
 				order = i;
+				styleMosaic(allItems, order, i);
 				break;
 			case 'right':
 				order = i + (options.gridColumns - 1) - (i % options.gridColumns * 2);
 				if ($(allItems[i]).hasClass('mz-grid__caption')){order -= options.gridColumns-1;}
+				styleMosaic(allItems, order, i);
 				break;
 			case 'bottom':
 				order = allItems.length - 1 - i;
+				styleMosaic(allItems, order, i);
+				break;
+			case 'cube':
+				styleCube(allItems, clickedObject);
 				break;
 			default:
 				order = i;
 				break;
 		}
-
-		timeout(allItems, order, i);
-
 	}
 }
 
 //timeout-function
-function timeout(allItems, order, i) {
+function styleMosaic(allItems, order, i) {
 
 	//timeout für showing items in DOM
 	setTimeout(function() { 
@@ -178,18 +184,65 @@ function timeout(allItems, order, i) {
 
 }
 
+function styleCube(allItems, clickedObject){
+
+	var clickedObjectOverride = 5;
+
+	var visibleItems = [];
+
+	visibleItems.push(clickedObjectOverride);
+
+	// insert for loop through array
+
+	var itemInRow = Math.floor(clickedObjectOverride/options.gridColumns);
+	var itemInColumn = clickedObjectOverride % options.gridColumns;
+
+	log('cube /'+ ' clickedItem = ' + clickedObjectOverride + ' / in row: ' + (itemInRow ) + ', in column: ' + (itemInColumn ));
+
+	$(allItems[clickedObjectOverride]).addClass('mz-grid__cube-first');
+	$(allItems[clickedObjectOverride]).attr(options.cubeVisible, 'yes');
+
+	if (itemInRow === 0 ) {
+		log('first');
+		var itemBelow = clickedObjectOverride + options.column;
+		$(allItems[itemBelow]).addClass('mz-grid__mosaic-bottom');
+		$(allItems[itemBelow]).attr(options.cubeVisible, 'yes');
+
+	}
+	else if (itemInRow > 0 && itemInRow < options.gridRows) {
+		log('between');
+		var itemTop = clickedObjectOverride - options.gridColumns;
+		var itemBelow = clickedObjectOverride + options.gridColumns;
+
+		log(itemTop);
+		log(itemBelow);
+
+		$(allItems[itemBelow]).addClass('mz-grid__mosaic-top');
+		$(allItems[itemBelow]).attr(options.cubeVisible, 'yes');
+
+		$(allItems[itemTop]).addClass('mz-grid__mosaic-bottom');
+		$(allItems[itemTop]).attr(options.cubeVisible, 'yes');
+	}
+	else {
+		log('last');
+	}
+
+	return false; 
+
+}
+
 //load image, get dimensions of image
 //trigger callback
-function returnDimension(imageUrl, typeOfMosaic, callback){
+function returnDimension(clickedObject, typeOfMosaic, callback){
     var image = new Image();
-	image.src = imageUrl;
+	image.src = clickedObject.attr('data-mz-link');
 	image.onload = function() {
 
 	    var imageWidth = image.width;
 	    var imageHeight = image.height;
 	    var imageAspectRatio = imageWidth/imageHeight;
 
-	    callback(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic);
+	    callback(clickedObject, imageWidth, imageHeight, imageAspectRatio, typeOfMosaic);
 	};
 }
 

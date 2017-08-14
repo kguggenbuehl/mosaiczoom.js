@@ -61,7 +61,6 @@ img {
 	list-style-type: none;
 	box-sizing: border-box;
 	transform: rotateX(90deg);
-	
 }
 
 .mz-grid__image {
@@ -98,6 +97,12 @@ img {
 
 .mz-grid__mosaic-right {
 	animation: right 0.5s linear;
+	transform-origin: 100% 0;
+	animation-fill-mode: forwards;
+}
+
+.mz-grid__cube-first {
+	animation: right 0s linear;
 	transform-origin: 100% 0;
 	animation-fill-mode: forwards;
 }
