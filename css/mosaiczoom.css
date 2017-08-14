@@ -21,6 +21,12 @@ img {
 	max-height:100px;
 }
 
+
+/*needed styling for mosaiczoom*/
+.mz-link {
+	cursor: pointer;
+}
+
 .mz-wrapper {
 	box-sizing: border-box;
 	position: relative;
@@ -31,7 +37,6 @@ img {
 	content: '';
 }
 
-/*needed styling for mosaiczoom*/
 .mz-grid {
 	height: 100%;
 	width: 100%;

@@ -151,7 +151,7 @@ function setMosaic(imageUrl, imageWidth, imageHeight, imageAspectRatio, typeOfMo
 				break;
 			case 'right':
 				order = i + (options.gridColumns - 1) - (i % options.gridColumns * 2);
-				if ($(allItems[i]).hasClass('mz-grid__caption')){order -= options.gridColumns-1};
+				if ($(allItems[i]).hasClass('mz-grid__caption')){order -= options.gridColumns-1;}
 				break;
 			case 'bottom':
 				order = allItems.length - 1 - i;
