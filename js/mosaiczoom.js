@@ -94,7 +94,6 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 	var caption = (options.caption) ? $(options.gridWrapper).find('li.mz-grid__caption') : false ;
 	var captionHeight = (caption) ? caption.outerHeight() : 0;
 	var gridWidth = grid.width();
-	log(captionHeight);
 	var gridHeigth = grid.height();
 
 	//get grid aspect ratio
@@ -147,38 +146,39 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 		switch (typeOfMosaic){
 			case 'left':
 				order = i;
-				styleMosaic(allItems, order, i);
+				styleMosaic($(allItems[order]), options.mosaicClass, i);
 				break;
 			case 'top':
 				order = i;
-				styleMosaic(allItems, order, i);
+				styleMosaic($(allItems[order]), options.mosaicClass, i);
 				break;
 			case 'right':
 				order = i + (options.gridColumns - 1) - (i % options.gridColumns * 2);
 				if ($(allItems[i]).hasClass('mz-grid__caption')){order -= options.gridColumns-1;}
-				styleMosaic(allItems, order, i);
+				styleMosaic($(allItems[order]), options.mosaicClass, i);
 				break;
 			case 'bottom':
 				order = allItems.length - 1 - i;
-				styleMosaic(allItems, order, i);
-				break;
-			case 'cube':
-				styleCube(allItems, clickedObject);
+				styleMosaic($(allItems[order]), options.mosaicClass, i);
 				break;
 			default:
-				order = i;
 				break;
 		}
+	}
+
+	if (typeOfMosaic == 'cube') {
+
+		styleCube(allItems, clickedObject);
 	}
 }
 
 //timeout-function
-function styleMosaic(allItems, order, i) {
+function styleMosaic(item, mosaicClass, i) {
 
 	//timeout für showing items in DOM
 	setTimeout(function() { 
 			
-	    $(allItems[order]).addClass(options.mosaicClass);
+	    item.addClass(mosaicClass);
 
 	    }, i * options.timeFadein);
 
@@ -192,40 +192,126 @@ function styleCube(allItems, clickedObject){
 
 	visibleItems.push(clickedObjectOverride);
 
-	// insert for loop through array
-
-	var itemInRow = Math.floor(clickedObjectOverride/options.gridColumns);
-	var itemInColumn = clickedObjectOverride % options.gridColumns;
-
-	log('cube /'+ ' clickedItem = ' + clickedObjectOverride + ' / in row: ' + (itemInRow ) + ', in column: ' + (itemInColumn ));
-
 	$(allItems[clickedObjectOverride]).addClass('mz-grid__cube-first');
 	$(allItems[clickedObjectOverride]).attr(options.cubeVisible, 'yes');
 
-	if (itemInRow === 0 ) {
-		log('first');
-		var itemBelow = clickedObjectOverride + options.column;
-		$(allItems[itemBelow]).addClass('mz-grid__mosaic-bottom');
-		$(allItems[itemBelow]).attr(options.cubeVisible, 'yes');
+	log(visibleItems);
 
-	}
-	else if (itemInRow > 0 && itemInRow < options.gridRows) {
-		log('between');
-		var itemTop = clickedObjectOverride - options.gridColumns;
-		var itemBelow = clickedObjectOverride + options.gridColumns;
+	var i = 0;
+	var gridItems = options.gridRows * options.gridColumns;
 
-		log(itemTop);
-		log(itemBelow);
+	while (i < gridItems) {
 
-		$(allItems[itemBelow]).addClass('mz-grid__mosaic-top');
-		$(allItems[itemBelow]).attr(options.cubeVisible, 'yes');
+		var target = visibleItems[i];
 
-		$(allItems[itemTop]).addClass('mz-grid__mosaic-bottom');
-		$(allItems[itemTop]).attr(options.cubeVisible, 'yes');
-	}
-	else {
-		log('last');
-	}
+		log(target);
+
+		var itemInRow = Math.floor(target/options.gridColumns);
+		var itemInColumn = target % options.gridColumns;
+
+		if (itemInRow === 0 ) {
+
+			var itemBelow = target + options.column;
+
+			if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes'){
+
+				styleMosaic($(allItems[target]), 'mz-grid__mosaic-bottom', i);
+
+				visibleItems.push(itemBelow);
+
+				$(allItems[itemBelow]).attr(options.cubeVisible, 'yes');
+			}
+		}
+		else if (itemInRow > 0 && itemInRow < options.gridRows) {
+
+			var itemTop = target - options.gridColumns;
+			var itemBelow = target + options.gridColumns;
+
+			if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes'){
+
+				styleMosaic($(allItems[itemBelow]), 'mz-grid__mosaic-bottom', i);
+
+				visibleItems.push(itemBelow);
+
+				$(allItems[itemBelow]).attr(options.cubeVisible, 'yes');
+			}
+
+			if ($(allItems[itemTop]).attr(options.cubeVisible) != 'yes'){
+
+				
+				styleMosaic($(allItems[itemTop]), 'mz-grid__mosaic-top', i);
+
+				visibleItems.push(itemTop);
+
+				$(allItems[itemTop]).attr(options.cubeVisible, 'yes');
+			}
+		}
+		else {
+
+			var itemTop = target - options.gridColumns;
+
+			if ($(allItems[itemTop]).attr(options.cubeVisible) != 'yes'){
+
+				styleMosaic($(allItems[itemTop]), 'mz-grid__mosaic-top', i);
+
+				visibleItems.push(itemTop);
+
+				$(allItems[itemTop]).attr(options.cubeVisible, 'yes');
+			}
+		}
+
+		if (itemInColumn === 0 ) {
+
+			var itemRight = target + 1;
+
+			if ($(allItems[itemRight]).attr(options.cubeVisible) != 'yes'){
+				
+				styleMosaic($(allItems[itemRight]), 'mz-grid__mosaic-left', i);
+
+				visibleItems.push(itemRight);
+
+				$(allItems[itemRight]).attr(options.cubeVisible, 'yes');
+			}
+		}
+		else if (itemInColumn > 0 && itemInColumn < options.gridColumns) {
+
+			var itemRight = target + 1;
+			var itemLeft = target - 1;
+
+			if ($(allItems[itemRight]).attr(options.cubeVisible) != 'yes'){
+
+				styleMosaic($(allItems[itemRight]), 'mz-grid__mosaic-left', i);
+
+				visibleItems.push(itemRight);
+
+				$(allItems[itemRight]).attr(options.cubeVisible, 'yes');
+			}
+
+			if ($(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
+
+				styleMosaic($(allItems[itemLeft]), 'mz-grid__mosaic-right', i);
+
+				visibleItems.push(itemLeft);
+
+				$(allItems[itemLeft]).attr(options.cubeVisible, 'yes');
+			}
+		}
+		else {
+
+			var itemLeft = target - 1;
+
+			if ($(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
+
+				styleMosaic($(allItems[itemLeft]), 'mz-grid__mosaic-right', i);
+
+				visibleItems.push(itemLeft);
+
+				$(allItems[itemLeft]).attr(options.cubeVisible, 'yes');
+			}
+		}
+
+		i++
+	};
 
 	return false; 
 
