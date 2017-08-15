@@ -52,7 +52,7 @@ img {
 	left:0;
 	right:0;
 	bottom: 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 
@@ -113,25 +113,28 @@ img {
 	animation: cube-top 1s linear;
 	transform-origin: 100% 100%;
 	animation-fill-mode: forwards;
-	z-index:100;
+	transform-style: preserve-3d;
 }
 
 .mz-grid__cube-bottom {
 	animation: cube-top 1s linear;
 	transform-origin: 0 0;
 	animation-fill-mode: forwards;
+	transform-style: preserve-3d;
 }
 
 .mz-grid__cube-left {
 	animation: cube-left 1s linear;
 	transform-origin: 0 0;
 	animation-fill-mode: forwards;
+	transform-style: preserve-3d;
 }
 
 .mz-grid__cube-right {
 	animation: cube-right 1s linear;
 	transform-origin: 100% 0;
 	animation-fill-mode: forwards;
+	transform-style: preserve-3d;
 }
 
 
@@ -146,6 +149,7 @@ img {
     transform: rotateX(0deg) skewX(00deg);
   }
 }
+
 
 @keyframes cube-bottom {
   0% {
@@ -175,7 +179,7 @@ img {
   0% {
     transform: rotateY(180deg) skewY(0deg);
   }
-  100% {
+  50% {
     transform: rotateY(90deg) skewY(30deg);
   }
   100% {
