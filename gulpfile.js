@@ -8,9 +8,9 @@ var path = require('path');
 
 /* Change your directory and settings here */
 var settings = {
-    publicDir: '.',
-    sassDir: 'css',
-    cssDir: 'css'
+    publicDir: 'src',
+    sassDir: 'src/css',
+    cssDir: 'src/css'
 };
 
 /**
@@ -46,7 +46,7 @@ gulp.task('serve', ['sass'], function() {
 gulp.task('sass', function() {
     return gulp.src(settings.sassDir + "/*.scss")
         .pipe(sourcemaps.init())
-        .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+        .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer('last 2 version'))
         .pipe(gulp.dest(settings.cssDir))
         .pipe(browserSync.stream());

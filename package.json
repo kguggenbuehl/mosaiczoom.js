@@ -1,13 +1,13 @@
 {
   "name": "gulp-browsersync-sass-starter",
   "version": "1.0.0",
-  "description": "",
+  "description": "By clicking a link, mosaiczoom.js loads an enlarged view of the given image. You can choose from different 'fadein'-effects.",
   "main": "gulpfile.js",
   "scripts": {
     "start": "node node_modules/gulp/bin/gulp.js"
   },
   "author": "",
-  "license": "Kaspar Guggenbühl",
+  "license": "UNLICENSED",
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "gulp": "^3.9.1",
