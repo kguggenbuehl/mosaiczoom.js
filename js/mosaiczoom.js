@@ -25,7 +25,7 @@ function mosaiczoom(userValues){
 		cubeVisible: 'data-mz-visible',
 
 		timeFadein: 200,
-		timeFadeinCube: 500,
+		timeFadeinCube: 250,
 		timeFadeout: 1000,
 		portraitSize: 0.4
 	};
@@ -184,26 +184,28 @@ function styleMosaic(item, mosaicClass, i, delay) {
 function styleCube(allItems, clickedObject){
 
 	//clicked object
-	var clickedObjectOverride = 10;
+	var clickedObjectOverride = 6;
 	//get fadein-time	
 	var delay = options.timeFadeinCube;
 	//define item-array for order
 	var visibleItems = [];
+	var tempItems = [];
 	//push clicked item into array and add class and attribute
 	visibleItems.push(clickedObjectOverride);
 	$(allItems[clickedObjectOverride]).addClass('mz-grid__cube-first');
 	$(allItems[clickedObjectOverride]).attr(options.cubeVisible, 'yes');
 
 	//define i and gridItems
-	var i = 0;
+	var j = 0;
+	var i = 1;
 	var gridItems = options.gridRows * options.gridColumns;
 
 	//loop through items in array
 	//check if items top, left, top and bottom are visible yet or not
 	//if not, add to timeout-function, add class and push to array
-	while (i < gridItems-1) {
+	while (j < gridItems-1) {
 
-		var target = visibleItems[i];
+		var target = visibleItems[j];
 
 		var itemInRow = Math.floor(target/options.gridColumns);
 		var itemInColumn = target % options.gridColumns;
@@ -213,39 +215,44 @@ function styleCube(allItems, clickedObject){
 		var itemRight = target + 1;
 		var itemLeft = target - 1;
 
+		// log(itemTop + ' | ' + itemBelow + ' | ' + itemRight + ' | ' + itemLeft);
 
 		if (itemInRow === 0 ) {
 
 			if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemBelow]), 'mz-grid__cube-bottom', i, delay);
 				visibleItems.push(itemBelow);
 				$(allItems[itemBelow]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemBelow]), 'mz-grid__cube-bottom', i, delay);
+				i++;
 			}
 		}
 		else if (itemInRow > 0 && itemInRow < options.gridRows-1) {
 
 			if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemBelow]), 'mz-grid__cube-bottom', i, delay);
 				visibleItems.push(itemBelow);
 				$(allItems[itemBelow]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemBelow]), 'mz-grid__cube-bottom', i, delay);
+				i++;
 			}
 
 			if ($(allItems[itemTop]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemTop]), 'mz-grid__cube-top', i, delay);
 				visibleItems.push(itemTop);
 				$(allItems[itemTop]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemTop]), 'mz-grid__cube-top', i, delay);
+				i++;
 			}
 		}
 		else {
 
 			if ($(allItems[itemTop]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemTop]), 'mz-grid__cube-top', i, delay);
 				visibleItems.push(itemTop);
 				$(allItems[itemTop]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemTop]), 'mz-grid__cube-top', i, delay);
+				i++;
 			}
 		}
 
@@ -253,38 +260,54 @@ function styleCube(allItems, clickedObject){
 
 			if ($(allItems[itemRight]).attr(options.cubeVisible) != 'yes'){
 				
-				styleMosaic($(allItems[itemRight]), 'mz-grid__cube-left', i, delay);
 				visibleItems.push(itemRight);
 				$(allItems[itemRight]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemRight]), 'mz-grid__cube-left', i, delay);
+				i++;
 			}
 		}
 		else if (itemInColumn > 0 && itemInColumn < options.gridColumns-1) {
 
 			if ($(allItems[itemRight]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemRight]), 'mz-grid__cube-left', i, delay);
 				visibleItems.push(itemRight);
 				$(allItems[itemRight]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemRight]), 'mz-grid__cube-left', i, delay);
+				i++;
 			}
 
 			if ($(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemLeft]), 'mz-grid__cube-right', i, delay);
 				visibleItems.push(itemLeft);
 				$(allItems[itemLeft]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemLeft]), 'mz-grid__cube-right', i, delay);
+				i++;
 			}
 		}
 		else {
 
 			if ($(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
 
-				styleMosaic($(allItems[itemLeft]), 'mz-grid__cube-right', i, delay);
 				visibleItems.push(itemLeft);
 				$(allItems[itemLeft]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
+				styleMosaic($(allItems[itemLeft]), 'mz-grid__cube-right', i, delay);
+				i++;
 			}
 		}
 
-		i++;
+		if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes' ||
+			$(allItems[itemTop]).attr(options.cubeVisible) != 'yes' ||
+			$(allItems[itemRight]).attr(options.cubeVisible) != 'yes' ||
+			$(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
+
+			
+
+		log('new i: ' + i);
+
+		}
+
+		j++;
+
 	}
 
 	//add class and z-index to caption
