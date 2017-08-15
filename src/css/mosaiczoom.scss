@@ -75,6 +75,7 @@ img {
 	padding:15px;
 	position: absolute;
 	bottom:0;
+	left:0;
 	width:100%;
 }
 
@@ -104,9 +105,7 @@ img {
 
 
 .mz-grid__cube-first {
-	animation: cube-right 0s linear;
-	transform-origin: 100% 100%;
-	animation-fill-mode: forwards;
+	transform: rotateX(0deg) skewX(00deg);
 }
 
 .mz-grid__cube-top {
