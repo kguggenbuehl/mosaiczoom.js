@@ -25,6 +25,7 @@ function mosaiczoom(userValues){
 		cubeVisible: 'data-mz-visible',
 
 		timeFadein: 200,
+		timeFadeinCube: 500,
 		timeFadeout: 1000,
 		portraitSize: 0.4
 	};
@@ -141,7 +142,7 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 			});	
 		}
 
-		//change order when type of mosaic is right, bottom, left, right or cube
+		//change order when type of mosaic is right, bottom, left, right
 		var order = 0;
 		switch (typeOfMosaic){
 			case 'left':
@@ -165,9 +166,8 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 				break;
 		}
 	}
-
+	//when type is 'cube' start styleCube
 	if (typeOfMosaic == 'cube') {
-
 		styleCube(allItems, clickedObject);
 	}
 }
@@ -177,30 +177,30 @@ function styleMosaic(item, mosaicClass, i, delay) {
 
 	//timeout für showing items in DOM
 	setTimeout(function() { 
-			
-	    item.addClass(mosaicClass);
-
-	    }, i * delay);
-
+		item.addClass(mosaicClass);
+	}, i * delay);
 }
 
 function styleCube(allItems, clickedObject){
 
+	//clicked object
 	var clickedObjectOverride = 10;
-
-	options.timeFadein = 200;
-	var delay = options.timeFadein;
-
+	//get fadein-time	
+	var delay = options.timeFadeinCube;
+	//define item-array for order
 	var visibleItems = [];
-
+	//push clicked item into array and add class and attribute
 	visibleItems.push(clickedObjectOverride);
-
 	$(allItems[clickedObjectOverride]).addClass('mz-grid__cube-first');
 	$(allItems[clickedObjectOverride]).attr(options.cubeVisible, 'yes');
 
+	//define i and gridItems
 	var i = 0;
 	var gridItems = options.gridRows * options.gridColumns;
 
+	//loop through items in array
+	//check if items top, left, top and bottom are visible yet or not
+	//if not, add to timeout-function, add class and push to array
 	while (i < gridItems-1) {
 
 		var target = visibleItems[i];
@@ -219,9 +219,7 @@ function styleCube(allItems, clickedObject){
 			if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes'){
 
 				styleMosaic($(allItems[itemBelow]), 'mz-grid__cube-bottom', i, delay);
-
 				visibleItems.push(itemBelow);
-
 				$(allItems[itemBelow]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 		}
@@ -230,19 +228,14 @@ function styleCube(allItems, clickedObject){
 			if ($(allItems[itemBelow]).attr(options.cubeVisible) != 'yes'){
 
 				styleMosaic($(allItems[itemBelow]), 'mz-grid__cube-bottom', i, delay);
-
 				visibleItems.push(itemBelow);
-
 				$(allItems[itemBelow]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 
 			if ($(allItems[itemTop]).attr(options.cubeVisible) != 'yes'){
 
-				
 				styleMosaic($(allItems[itemTop]), 'mz-grid__cube-top', i, delay);
-
 				visibleItems.push(itemTop);
-
 				$(allItems[itemTop]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 		}
@@ -251,9 +244,7 @@ function styleCube(allItems, clickedObject){
 			if ($(allItems[itemTop]).attr(options.cubeVisible) != 'yes'){
 
 				styleMosaic($(allItems[itemTop]), 'mz-grid__cube-top', i, delay);
-
 				visibleItems.push(itemTop);
-
 				$(allItems[itemTop]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 		}
@@ -263,9 +254,7 @@ function styleCube(allItems, clickedObject){
 			if ($(allItems[itemRight]).attr(options.cubeVisible) != 'yes'){
 				
 				styleMosaic($(allItems[itemRight]), 'mz-grid__cube-left', i, delay);
-
 				visibleItems.push(itemRight);
-
 				$(allItems[itemRight]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 		}
@@ -274,18 +263,14 @@ function styleCube(allItems, clickedObject){
 			if ($(allItems[itemRight]).attr(options.cubeVisible) != 'yes'){
 
 				styleMosaic($(allItems[itemRight]), 'mz-grid__cube-left', i, delay);
-
 				visibleItems.push(itemRight);
-
 				$(allItems[itemRight]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 
 			if ($(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
 
 				styleMosaic($(allItems[itemLeft]), 'mz-grid__cube-right', i, delay);
-
 				visibleItems.push(itemLeft);
-
 				$(allItems[itemLeft]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 		}
@@ -294,9 +279,7 @@ function styleCube(allItems, clickedObject){
 			if ($(allItems[itemLeft]).attr(options.cubeVisible) != 'yes'){
 
 				styleMosaic($(allItems[itemLeft]), 'mz-grid__cube-right', i, delay);
-
 				visibleItems.push(itemLeft);
-
 				$(allItems[itemLeft]).attr(options.cubeVisible, 'yes').css('z-index', i + gridItems);
 			}
 		}
@@ -304,11 +287,12 @@ function styleCube(allItems, clickedObject){
 		i++;
 	}
 
+	//add class and z-index to caption
 	styleMosaic($('.mz-grid__caption'), 'mz-grid__cube-first', i, delay);
 	$('.mz-grid__caption').css('z-index', i + gridItems);
 
+	//end function(setMosaic)
 	return false; 
-
 }
 
 //load image, get dimensions of image
