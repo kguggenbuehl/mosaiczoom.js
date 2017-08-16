@@ -118,7 +118,20 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 	//set aspect-ratio as % in padding-bottom of :after-element
 	if (imageAspectRatio > 1) {
 		grid.width('100%');
-		document.styleSheets[0].addRule('.mz-wrapper:after','padding-bottom: '+100/imageAspectRatio + '%'+';');
+
+		var sheet = document.styleSheets[0];
+
+		if (sheet.insertRule) {   // all browsers, except IE before version 9
+            sheet.insertRule ('.mz-wrapper:after {padding-bottom: '+100/imageAspectRatio + '%}', 0);
+        }
+        else {  // Internet Explorer before version 9
+            if (sheet.addRule) {
+                sheet.addRule ('.mz-wrapper:after {padding-bottom: '+100/imageAspectRatio + '%}', 0);
+            }
+        }
+
+
+
 	}
 	else {
 		grid.width(options.portraitSize*100+'%');
