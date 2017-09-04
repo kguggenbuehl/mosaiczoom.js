@@ -30,12 +30,18 @@ img {
 .mz-wrapper {
 	box-sizing: border-box;
 	position: relative;
+
+	&__preventRoundingError {
+		width:99.9%;
+	}
+
+	&:after {
+		display: block;
+		content: '';
+	}
 }
 
-.mz-wrapper:after {
-	display: block;
-	content: '';
-}
+
 
 .mz-grid {
 	height: 100%;
@@ -52,7 +58,7 @@ img {
 	left:0;
 	right:0;
 	bottom: 0;
-	/*overflow: hidden;*/
+	// overflow: hidden;
 }
 
 
@@ -103,39 +109,44 @@ img {
 	animation-fill-mode: forwards;
 }
 
+.mz-grid__cube-caption {
+	transform: rotateX(0deg) skewX(00deg);;
+	animation: cube-first 1s linear;
+}
 
 .mz-grid__cube-first {
 	transform: rotateX(0deg) skewX(00deg);
+	animation: cube-first 1s linear;
 }
 
 .mz-grid__cube-top {
 	animation: cube-top 1s linear;
 	transform-origin: 100% 100%;
 	animation-fill-mode: forwards;
-	transform-style: preserve-3d;
 }
 
 .mz-grid__cube-bottom {
 	animation: cube-top 1s linear;
 	transform-origin: 0 0;
 	animation-fill-mode: forwards;
-	transform-style: preserve-3d;
 }
 
 .mz-grid__cube-left {
 	animation: cube-left 1s linear;
 	transform-origin: 0 0;
 	animation-fill-mode: forwards;
-	transform-style: preserve-3d;
 }
 
 .mz-grid__cube-right {
 	animation: cube-right 1s linear;
 	transform-origin: 100% 0;
 	animation-fill-mode: forwards;
-	transform-style: preserve-3d;
 }
 
+@keyframes cube-first {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
 
 @keyframes cube-top {
   0% {
