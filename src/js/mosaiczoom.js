@@ -3,12 +3,12 @@ function mosaiczoom(userValues){
 	mz_options = {
 
 		//grid numbers
-		gridRows: userValues.gridRows,
-		gridColumns: userValues.gridColumns,
+		gridRows: parseInt(userValues.gridRows),
+		gridColumns: parseInt(userValues.gridColumns),
 
 		//user values mosaic-style and caption
 		mosaic: userValues.mosaic,
-		caption: userValues.caption,
+		caption: (userValues.caption === 'true'),
 
 		//grid definitions
 		gridWrapper: '.mz-wrapper',
@@ -35,8 +35,11 @@ function mosaiczoom(userValues){
 		timeFadein: 200,
 		timeFadeinCube: 250,
 		timeFadeout: 500,
-		portraitSize: 0.5,
+		portraitSize: 0.4,
 	};
+
+	//unbind click-events
+	$(mz_options.link).off('click');
 
 	//bind click-event to links
 	$(mz_options.link).on('click', function(event){
@@ -60,7 +63,7 @@ function mosaiczoom(userValues){
 	$(mz_options.gridWrapper).on('click', function(e){
 		$(this).fadeOut(mz_options.timeFadeout).delay(mz_options.timeFadeout).queue(function(n) {$(this).html('').show(); n();});
 
-		$('.mz-wrapper').removeClass('mz-wrapper__preventRoundingError');
+		// $(mz_options.gridWrapper).removeClass('mz-wrapper__preventRoundingError');
 	});
 
 }
@@ -139,6 +142,11 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
         }
 	}
 
+	//when type is 'cube' start styleCube
+	if (typeOfMosaic == 'cube') {
+		styleCube(allItems, clickedObject);
+	}
+
 	// set images to each li
 	for (var i = 0; i < allItems.length; i++) {
 
@@ -180,10 +188,13 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 				break;
 		}
 	}
-	//when type is 'cube' start styleCube
-	if (typeOfMosaic == 'cube') {
-		styleCube(allItems, clickedObject);
-	}
+
+	//insert full image
+	$('.mz-grid').append('<img class="mz-grid__bigImage" src="'+clickedObject.attr('data-mz-link')+'">');
+	//hide little images, show full image
+	styleMosaic($('.mz-grid__image'), 'mz-grid__image__invisible', i, mz_options.timeFadein*1.3);
+	styleMosaic($('.mz-grid__bigImage'), 'mz-grid__bigImage__visible', i, mz_options.timeFadein*1.3);
+
 }
 
 //timeout-function
@@ -198,7 +209,8 @@ function styleMosaic(item, mosaicClass, i, delay) {
 function styleCube(allItems, clickedObject){
 
 	//clicked object
-	var clickedObjectOverride = 6;
+	var clickedObjectOverride = Math.floor(Math.random() * (allItems.length-1)) ;
+	log(clickedObjectOverride);
 	//get fadein-time	
 	var delay = mz_options.timeFadeinCube;
 	//define item-array for order
@@ -309,13 +321,6 @@ function styleCube(allItems, clickedObject){
 			}
 		}
 
-		if ($(allItems[itemBelow]).attr(mz_options.cubeVisible) != 'yes' ||
-			$(allItems[itemTop]).attr(mz_options.cubeVisible) != 'yes' ||
-			$(allItems[itemRight]).attr(mz_options.cubeVisible) != 'yes' ||
-			$(allItems[itemLeft]).attr(mz_options.cubeVisible) != 'yes'){
-
-		}
-
 		j++;
 
 	}
@@ -323,9 +328,6 @@ function styleCube(allItems, clickedObject){
 	//add class and z-index to caption
 	styleMosaic($('.mz-grid__caption'), 'mz-grid__cube-caption', i, delay);
 	$('.mz-grid__caption').css('z-index', i + gridItems);
-
-	//prevent from rounding errors
-	styleMosaic($('.mz-wrapper'), 'mz-wrapper__preventRoundingError', i, delay);
 
 	//end function(setMosaic)
 	return false; 

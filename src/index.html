@@ -8,10 +8,49 @@
 <body>
 	<main>
 		<h1>mosaiczoom.js</h1>
+		<p>Set Styling and click on an image.</p>
 		<!-- needs link (mz-link), needs image (data-mz-link) and optional caption (data-mz-caption) -->
-		<div >
+		<div class="settings">
 			<img class="mz-link" data-mz-link="img/background.jpg" data-mz-caption="That's a wonderful palm beach at sunset." src="img/background.jpg">
 			<img class="mz-link" data-mz-link="img/beach.jpg" data-mz-caption="A landing stage towards the open sea." src="img/beach.jpg">
+			<div class="options">
+				<label for="mosaicselection">Style</label>
+				<select class="options__mosaicselection" name="mosaicselection">
+					<option value="cube" selected>cube</option>
+					<option value="top">top</option>
+					<option value="bottom">bottom</option>
+					<option value="left">left</option>
+					<option value="right">right</option>
+				</select><br>
+				<label for="captionselection">Caption</label>
+				<select class="options__captionselection" name="captionselection">
+					<option value="true" type= selected>true</option>
+					<option value="false">false</option>
+				</select><br>
+				<label for="rowselection">Rows</label>
+				<select class="options__rowselection" name="rowselection">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4" selected>4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+				</select><br>
+				<label for="columnselection">Columns</label>
+				<select class="options__columnselection" name="columnselection">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4" selected>4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+				</select><br>
+			</div>
+			
 		</div>
 
 		<!-- needs wrapper (mz-wrapper) -->
@@ -32,9 +71,23 @@
 			gridRows: 4, //possible: 2 to infinite
 			gridColumns: 4, //possible: 2 to infinite
 			mosaic: 'cube', //possible: top, left, bottom, right, cube
-			caption: true //possible: true / false
+			caption: 'true' //possible: true / false
 		});
 
+		//add on-change-function
+		$('.options__mosaicselection, .options__captionselection, .options__rowselection, .options__columnselection').on('change', function(event) {
+			event.preventDefault();
+
+			$('.mz-wrapper').fadeOut(500).delay(500).queue(function(n) {$(this).html('').show(); n();});
+			// $('.mz-wrapper').removeClass('mz-wrapper__preventRoundingError');
+			
+			mosaiczoom({
+				gridRows: $('.options__rowselection').val(),
+				gridColumns: $('.options__columnselection').val(),
+				mosaic: $('.options__mosaicselection').val(), 
+				caption: $('.options__captionselection').val()
+			});
+		});
 	});
 
 </script>
