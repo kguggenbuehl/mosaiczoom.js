@@ -63,7 +63,6 @@ function mosaiczoom(userValues){
 	$(mz_options.gridWrapper).on('click', function(e){
 		$(this).fadeOut(mz_options.timeFadeout).delay(mz_options.timeFadeout).queue(function(n) {$(this).html('').show(); n();});
 
-		// $(mz_options.gridWrapper).removeClass('mz-wrapper__preventRoundingError');
 	});
 
 }
@@ -192,9 +191,17 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 	//insert full image
 	$('.mz-grid').append('<img class="mz-grid__bigImage" src="'+clickedObject.attr('data-mz-link')+'">');
 	//hide little images, show full image
-	styleMosaic($('.mz-grid__image'), 'mz-grid__image__invisible', i, mz_options.timeFadein*1.3);
-	styleMosaic($('.mz-grid__bigImage'), 'mz-grid__bigImage__visible', i, mz_options.timeFadein*1.3);
+	//count delay
+	var showHideDelay= 0;
+	if (typeOfMosaic == 'cube') {
+		showHideDelay = mz_options.timeFadeinCube*1.3*mz_options.gridColumns*mz_options.gridRows;
+	}
+	else {
+		showHideDelay = mz_options.timeFadein*1.3*mz_options.gridColumns*mz_options.gridRows;
+	}
 
+	$('.mz-grid__image').delay(mz_options.timeFadeinCube*1.3*mz_options.gridColumns*mz_options.gridRows).hide(0);
+	$('.mz-grid__bigImage').delay(mz_options.timeFadeinCube*1.3*mz_options.gridColumns*mz_options.gridRows).show(0);
 }
 
 //timeout-function

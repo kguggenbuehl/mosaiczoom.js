@@ -1,44 +1,13 @@
+/*needed styling for mosaiczoom*/
 .hackRule {
   content: ''; }
 
-/* Styling for example */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #c8c8c8; }
-
-main {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-flow: column;
-      flex-flow: column;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  -ms-flex-align: stretch;
-      align-items: stretch;
-  height: 100%;
-  box-sizing: border-box; }
-
-img {
-  max-height: 100px; }
-
-.settings {
-  margin-bottom: 20px; }
-
-.options {
-  display: inline-block; }
-
-/*needed styling for mosaiczoom*/
 .mz-link {
   cursor: pointer; }
 
 .mz-wrapper {
   box-sizing: border-box;
   position: relative; }
-  .mz-wrapper__preventRoundingError {
-    width: 99.9%; }
   .mz-wrapper:after {
     display: block;
     content: ''; }
@@ -62,13 +31,14 @@ img {
   right: 0;
   bottom: 0; }
 
+_::-webkit-full-page-media, _:future, :root .mz-grid {
+  overflow: hidden; }
+
 .mz-grid__bigImage {
   width: auto;
   max-height: 100%;
   height: 100%;
   display: none; }
-  .mz-grid__bigImage__visible {
-    display: block; }
 
 .mz-grid__item {
   padding: 0;

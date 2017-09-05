@@ -1,0 +1,38 @@
+/* Styling for example */
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #0b586e;
+  color: white; }
+
+main {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column;
+      flex-flow: column;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  -ms-flex-align: stretch;
+      align-items: stretch;
+  height: 100%;
+  box-sizing: border-box; }
+
+img {
+  max-height: 100px; }
+
+.settings {
+  margin-bottom: 20px; }
+  .settings img {
+    margin-right: 12px; }
+
+.options {
+  display: inline-block; }
+  .options label {
+    width: 100px;
+    display: inline-block; }
+
+p {
+  margin: 0 0 20px 0; }
