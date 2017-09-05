@@ -9,7 +9,7 @@ var path = require('path');
 /* Change your directory and settings here */
 var settings = {
     publicDir: 'src',
-    sassDir: 'src/css',
+    sassDir: 'src/sass',
     cssDir: 'src/css'
 };
 
