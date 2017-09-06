@@ -3,7 +3,7 @@
 ## What it does
 By clicking a link, mosaiczoom.js loads an enlarged view of the given image. You can choose from different 'fadein'-effects (top, bottom, left, right, cube). You can choose the amount of rows and columns and optional add a caption.
 
-Test it: [mosaiczoom.k-guggenbuehl.ch](mosaiczoom.k-guggenbuehl.ch)
+Test it: [mosaiczoom.k-guggenbuehl.ch/src](mosaiczoom.k-guggenbuehl.ch/src)
 
 
 ## What it needs
