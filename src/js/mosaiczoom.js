@@ -200,8 +200,9 @@ function setMosaic(clickedObject, imageWidth, imageHeight, imageAspectRatio, typ
 		showHideDelay = mz_options.timeFadein*1.3*mz_options.gridColumns*mz_options.gridRows;
 	}
 
-	$('.mz-grid__image').delay(mz_options.timeFadeinCube*1.3*mz_options.gridColumns*mz_options.gridRows).hide(0);
 	$('.mz-grid__bigImage').delay(mz_options.timeFadeinCube*1.3*mz_options.gridColumns*mz_options.gridRows).show(0);
+	$('.mz-grid__image').delay(mz_options.timeFadeinCube*1.3*mz_options.gridColumns*mz_options.gridRows).hide(0);
+	
 }
 
 //timeout-function
